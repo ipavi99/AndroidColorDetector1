@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">colourdetector</string>
+    <string name="enter_the_sample_name">Enter the sample name</string>
+    <string name="ex_sample101">Ex: Sample101</string>
+    <string name="done">Done</string>
+    <string name="initial_colour">Initial Colour</string>
+    <string name="final_colour">Final Colour</string>
 </resources>
