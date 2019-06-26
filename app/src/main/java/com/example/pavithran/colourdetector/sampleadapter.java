@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -37,8 +38,18 @@ public class sampleadapter extends RecyclerView.Adapter<sampleadapter.MyViewHold
 
         sample sample = sampleList.get(position);
         myViewHolder.samplename.setText(sample.getSamplename());
-        myViewHolder.dispc1.setBackgroundColor(sample.getC1());
-        myViewHolder.dispc2.setBackgroundColor(sample.getC2());
+        myViewHolder.dispc1.setBackgroundColor(sample.getC2());
+        myViewHolder.dispc1.setEnabled(false);
+        myViewHolder.dispc2.setBackgroundColor(sample.getC1());
+        myViewHolder.dispc2.setEnabled(false);
+        if(sample.getStat()==true)
+        {
+            myViewHolder.samplestatus.setImageResource(R.drawable.ic_thumb_up);
+        }
+        else
+        {
+            myViewHolder.samplestatus.setImageResource(R.drawable.ic_thumb_down_black_24dp);
+        }
 
     }
 
@@ -50,14 +61,15 @@ public class sampleadapter extends RecyclerView.Adapter<sampleadapter.MyViewHold
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
-        public TextView samplename, samplestatus;
+        public TextView samplename;
+        public ImageView samplestatus;
         public Button dispc1, dispc2;
 
         public MyViewHolder(View view){
 
             super(view);
             samplename = view.findViewById(R.id.sname);
-            samplestatus = view.findViewById(R.id.status);
+            samplestatus = view.findViewById(R.id.imgThumb);
             dispc1 = view.findViewById(R.id.c1);
             dispc2 = view.findViewById(R.id.c2);
         }

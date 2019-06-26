@@ -1,6 +1,8 @@
 package com.example.pavithran.colourdetector;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -33,6 +35,8 @@ public class Activity2Camera extends AppCompatActivity {
         setContentView(R.layout.activity2_camera);
         nextbutton = findViewById(R.id.btnNext);
         nextbutton.setVisibility(View.INVISIBLE);
+
+
 
 
         btnCapture =(Button)findViewById(R.id.btnTakePicture);
@@ -96,12 +100,30 @@ public class Activity2Camera extends AppCompatActivity {
             public void onClick(View view) {
                 s.setColour2(hexPixelColor);
                 s.setC2(pixelColor);
-                Toast.makeText(Activity2Camera.this, "Sample obj contents"+s.getSamplename()+" "+s.getColour1()+" "+s.getC1()+" "+s.getColour2()+" "+s.getC2(), Toast.LENGTH_LONG).show();
-                Intent i =new Intent(Activity2Camera.this,ActivityStorage.class);
+                //Toast.makeText(Activity2Camera.this, "Sample obj contents"+s.getSamplename()+" "+s.getColour1()+" "+s.getC1()+" "+s.getColour2()+" "+s.getC2(), Toast.LENGTH_LONG).show();
+                final Intent i =new Intent(Activity2Camera.this,ActivityStorage.class);
                 Bundle mBundle = new Bundle();
+                String val;
+                if(s.getStat()){val="CONSUMABLE";}
+                else{val="NOT CONSUMABLE";}
                 mBundle.putSerializable("SampleObject",s);
                 i.putExtras(mBundle);
-                startActivity(i);
+                final AlertDialog.Builder builder = new AlertDialog.Builder(Activity2Camera.this);
+                builder.setMessage("The Sample "+s.getSamplename()+" is "+val).setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int j) {
+
+                                //finish();
+                                startActivity(i);
+
+                            }
+                        });
+                AlertDialog alert = builder.create();
+                alert.setTitle("DONE");
+                alert.show();
+
+//                startActivity(i);
 
             }
         });

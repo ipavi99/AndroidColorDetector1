@@ -2,6 +2,7 @@ package com.example.pavithran.colourdetector;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,11 +22,12 @@ import java.util.List;
 
 public class ActivityStorage extends AppCompatActivity {
 
-    ImageView image;
     public static final String mysample = "MySample";
     private List<sample>sList = new ArrayList<>();
     RecyclerView recyclerView;
     sampleadapter mAdapter;
+
+    DatabaseHelper database;
 
 
 
@@ -34,6 +36,8 @@ public class ActivityStorage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stor);
 
+        database = new DatabaseHelper(this);
+
         recyclerView=findViewById(R.id.recycler_view);
         mAdapter = new sampleadapter(sList);
 
@@ -41,9 +45,38 @@ public class ActivityStorage extends AppCompatActivity {
 
 
         final sample s = (sample) getIntent().getSerializableExtra("SampleObject");
-        sList.add(s);
-        mAdapter.notifyDataSetChanged();
-//        Toast.makeText(this, s.getSamplename(), Toast.LENGTH_SHORT).show();
+
+
+
+
+        boolean xyz = database.insertData(s.getSamplename(),s.getC1(),s.getC2(),s.getStat());
+
+        if(xyz == true){
+            Toast.makeText(this, "SUCCESSFUL", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Toast.makeText(this, "FAILURE", Toast.LENGTH_SHORT).show();
+        }
+
+
+        int i = 0;
+        Cursor res = database.getAllData();
+        while(res.moveToNext()){
+
+            sample s1 = new sample();
+
+            s1.setSamplename(res.getString(1));
+            s1.setC1(Integer.parseInt(res.getString(2)));
+            s1.setC2(Integer.parseInt(res.getString(3)));
+            sList.add(s1);
+            Toast.makeText(this,res.getString(1) , Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, String.valueOf(i), Toast.LENGTH_SHORT).show();
+            i=i+1;
+        }
+
+
+
+
 
         recyclerView.setAdapter(mAdapter);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -55,7 +88,7 @@ public class ActivityStorage extends AppCompatActivity {
 
 
 
-
+        mAdapter.notifyDataSetChanged();
 
 
 
@@ -95,7 +128,7 @@ public class ActivityStorage extends AppCompatActivity {
         sample s1 = new sample("S01","nil",-255,"nil",-65280);
         sList.add(s1);
 
-        s1 = s1 = new sample("S01","nil",-65280,"nil",-255);
+        s1 = s1 = new sample("S02","nil",-65280,"nil",-255);
         sList.add(s1);
 
         mAdapter.notifyDataSetChanged();
